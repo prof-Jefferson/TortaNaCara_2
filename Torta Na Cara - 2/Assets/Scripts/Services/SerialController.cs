@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SerialController : MonoBehaviour
 {
+    public delegate void MessageReceivedHandler(string message);
+    public static event MessageReceivedHandler OnMessageReceived;
+
     private static Thread IOThread;
     private static SerialPort sp;
     private static string incomingMsg = "";
@@ -11,23 +14,31 @@ public class SerialController : MonoBehaviour
 
     private static void DataThread()
     {
-        sp = new SerialPort("COM7", 9600); // Certifique-se de substituir "COM7" pelo número da porta que o Arduino está usando
+        sp = new SerialPort("COM7", 9600);
         sp.Open();
+
+        Debug.Log("Porta Serial aberta");
 
         while (true)
         {
             if (outgoingMsg != "")
             {
+                Debug.Log("Enviando: " + outgoingMsg);
                 sp.Write(outgoingMsg);
-                outgoingMsg = ""; // Limpa a mensagem após o envio
+                outgoingMsg = "";
             }
 
             if (sp.BytesToRead > 0)
             {
                 incomingMsg = sp.ReadLine();
+                Debug.Log("Recebido: " + incomingMsg);
+                UnityMainThreadDispatcher.Enqueue(() =>
+                {
+                    OnMessageReceived?.Invoke(incomingMsg);
+                });
             }
 
-            Thread.Sleep(100); // Intervalo para reduzir a carga de trabalho
+            Thread.Sleep(100);
         }
     }
 
@@ -37,30 +48,24 @@ public class SerialController : MonoBehaviour
         IOThread.Start();
     }
 
-    private void Update()
+    public void Send(string message)
     {
-        if (incomingMsg != "")
-        {
-            Debug.Log("Dados recebidos: " + incomingMsg);
-            incomingMsg = ""; // Limpa a mensagem após o uso
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            outgoingMsg = "0"; // Altere para enviar o dado que quiser ao Arduino
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            outgoingMsg = "1";
+        outgoingMsg = message;
+        Debug.Log("Mensagem para enviar enfileirada: " + message);
     }
 
     private void OnDestroy()
     {
         if (IOThread != null)
         {
-            IOThread.Abort(); // Encerra a thread quando o jogo fecha
+            IOThread.Abort();
+            Debug.Log("Thread de IO interrompida");
         }
 
         if (sp != null && sp.IsOpen)
         {
-            sp.Close(); // Fecha a porta serial
+            sp.Close();
+            Debug.Log("Porta Serial fechada");
         }
     }
 }

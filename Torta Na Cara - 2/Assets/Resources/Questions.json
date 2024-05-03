@@ -1,0 +1,20 @@
+{
+    "questions": [
+      {
+        "question": "Qual é a capital da França?",
+        "options": ["Paris", "Londres", "Berlim"],
+        "answer": 0
+      },
+      {
+        "question": "Qual elemento químico tem o símbolo 'O'?",
+        "options": ["Oxigênio", "Ouro", "Ósmio"],
+        "answer": 0
+      },
+      {
+        "question": "Quem pintou 'Mona Lisa'?",
+        "options": ["Vincent Van Gogh", "Leonardo da Vinci", "Pablo Picasso"],
+        "answer": 1
+      }
+    ]
+  }
+  

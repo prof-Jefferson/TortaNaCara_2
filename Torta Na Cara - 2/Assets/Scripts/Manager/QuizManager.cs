@@ -82,7 +82,7 @@ public class QuizManager : MonoBehaviour
         optionBackgrounds[currentQuestion.answer].color = Color.green;
         if (selectedIndex != -1 && selectedIndex != currentQuestion.answer)
         {
-            optionBackgrounds[selectedIndex].color = Color.red;
+            optionBackgrounds[selectedIndex].color = Color.gray;
         }
 
         answerRevealed = true;

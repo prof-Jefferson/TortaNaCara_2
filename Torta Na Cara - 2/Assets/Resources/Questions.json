@@ -1,20 +1,49 @@
 {
     "questions": [
-      {
-        "question": "Qual é a capital da França?",
-        "options": ["Paris", "Londres", "Berlim"],
-        "answer": 0
-      },
-      {
-        "question": "Qual elemento químico tem o símbolo 'O'?",
-        "options": ["Oxigênio", "Ouro", "Ósmio"],
-        "answer": 0
-      },
-      {
-        "question": "Quem pintou 'Mona Lisa'?",
-        "options": ["Vincent Van Gogh", "Leonardo da Vinci", "Pablo Picasso"],
-        "answer": 1
-      }
+        {
+            "question": "Qual é a capital da França?",
+            "options": [
+                "Paris",
+                "Londres",
+                "Berlim"
+            ],
+            "answer": 0
+        },
+        {
+            "question": "Qual elemento químico tem o símbolo 'O'?",
+            "options": [
+                "Oxigênio",
+                "Ouro",
+                "Ósmio"
+            ],
+            "answer": 0
+        },
+        {
+            "question": "Quem pintou 'Mona Lisa'?",
+            "options": [
+                "Vincent Van Gogh",
+                "Leonardo da Vinci",
+                "Pablo Picasso"
+            ],
+            "answer": 1
+        },
+        {
+            "question": "Quanto são um mais um em modelo de contagem binário?",
+            "options": [
+                "2",
+                "11",
+                "10"
+            ],
+            "answer": 2
+        },
+        {
+            "question": "Em que ano ocorreu a Queda do Muro de Berlin?",
+            "options": [
+                "1988",
+                "1989",
+                "1987"
+            ],
+            "answer": 1
+        }
     ]
-  }
-  
+}

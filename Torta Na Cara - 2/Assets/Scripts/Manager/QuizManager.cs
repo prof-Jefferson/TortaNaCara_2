@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,6 +6,8 @@ using UnityEngine.UI; // Importe para usar o componente Image
 
 public class QuizManager : MonoBehaviour
 {
+    public static event Action OnCorrectAnswer; // Evento que será disparado para respostas corretas
+
     public TextMeshProUGUI questionText;
     public List<TextMeshProUGUI> optionTexts;
     public List<Image> optionBackgrounds; // Fundos das opções
@@ -16,6 +18,7 @@ public class QuizManager : MonoBehaviour
     private Question currentQuestion;
     private int selectedIndex = -1;
     private bool answerRevealed = false;
+    private List<int> askedQuestions = new List<int>(); // Lista de índices de perguntas já sorteadas
 
     void Start()
     {
@@ -41,15 +44,34 @@ public class QuizManager : MonoBehaviour
 
     void DrawQuestion()
     {
+        // Se todas as perguntas foram usadas, redefina a lista
+        if (askedQuestions.Count == questionList.questions.Count)
+        {
+            askedQuestions.Clear();
+            Debug.Log("Todas as perguntas foram usadas. Reiniciando a seleção.");
+        }
+
         answerRevealed = false;
         selectedIndex = -1;
         ResetVisuals();
 
-        int index = Random.Range(0, questionList.questions.Count);
+        // Sorteie um índice de pergunta que ainda não tenha sido usado
+        int index;
+        do
+        {
+            index = UnityEngine.Random.Range(0, questionList.questions.Count);
+        }
+        while (askedQuestions.Contains(index));
+
+        // Adiciona o índice à lista de perguntas já sorteadas
+        askedQuestions.Add(index);
+
+        // Define a pergunta atual com o índice sorteado
         currentQuestion = questionList.questions[index];
         questionText.text = currentQuestion.question;
 
-        string[] optionLabels = {"  A", "  B", "  C"};
+        // Exibe as opções
+        string[] optionLabels = { "  A", "  B", "  C" };
         for (int i = 0; i < optionTexts.Count; i++)
         {
             if (i < currentQuestion.options.Count)
@@ -86,6 +108,12 @@ public class QuizManager : MonoBehaviour
         }
 
         answerRevealed = true;
+
+        // Dispara o evento de resposta correta
+        if (selectedIndex == currentQuestion.answer)
+        {
+            OnCorrectAnswer?.Invoke();
+        }
     }
 
     public void OnAnswerSelected(int optionIndex)

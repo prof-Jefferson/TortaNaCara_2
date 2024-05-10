@@ -12,7 +12,9 @@ void setup() {
   pinMode(ledPin1, OUTPUT);           // Configura o pino do LED 1 como saída
   pinMode(buttonPin2, INPUT_PULLUP);  // Configura o pino do botão 2 como entrada com resistor de pull-up interno
   pinMode(ledPin2, OUTPUT);           // Configura o pino do LED 2 como saída
+
   Serial.begin(9600);                 // Inicia a comunicação serial a 9600 bps
+  Serial.setRxBufferSize(128);        // Ajusta o buffer de recebimento para 128 bytes
 }
 
 void loop() {
